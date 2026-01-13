@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    fontFamily:'serif',
-    color: '#fcf6f6',
-    backgroundColor: '#fcf6f6',
+    backgroundColor: '#d0d2d8',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop:62,
+    padding:24
+
   },
   text: {
     fontSize: 32,
@@ -16,5 +16,9 @@ export const styles = StyleSheet.create({
     fontFamily: "serif",
     textAlign: "center",
     
+  },
+  logo: {
+    height:34,
+    width:134,
   }
 });
