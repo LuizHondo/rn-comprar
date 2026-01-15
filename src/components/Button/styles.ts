@@ -15,5 +15,4 @@ export const styles = StyleSheet.create({
     fontSize:14,
     fontWeight:600,
   }
-}
-)
+})
