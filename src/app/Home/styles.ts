@@ -6,19 +6,26 @@ export const styles = StyleSheet.create({
     backgroundColor: '#d0d2d8',
     alignItems: 'center',
     paddingTop:62,
-    padding:24,
-    gap: 10
-  },
-  text: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "red",
-    fontFamily: "serif",
-    textAlign: "center",
-    
   },
   logo: {
     height:34,
     width:134,
+  },
+  form: {
+    width:'100%',
+    paddingHorizontal:16,
+    gap:7,
+    marginTop: 42,
+  },
+  content: {
+    flex: 1,
+    width:'100%',
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 24,
+    marginTop: 24
+    
+
   }
 });
