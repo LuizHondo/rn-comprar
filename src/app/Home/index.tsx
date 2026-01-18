@@ -8,6 +8,7 @@ import { FilterStatus } from '@/types/FilterStatus';
 
 
 
+
 export function Home() {
   return (
     <View style={styles.container}>
@@ -15,12 +16,11 @@ export function Home() {
 
       <View style={styles.form}>
         <Input placeholder='O que você precisa comprar'/>
-        <Button title="Entrar" activeOpacity={0.8} />
+        <Button title="Adicionar" activeOpacity={0.8} />
       </View>
       <View style={styles.content}>
         <Filter status={FilterStatus.DONE} isActive/>
         <Filter status={FilterStatus.PENDING} isActive/>
-
       </View>
     </View>
   );

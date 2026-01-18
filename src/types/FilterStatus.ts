@@ -1,4 +1,5 @@
 export enum FilterStatus {
   PENDING = "pending",
-  DONE = "done"
+  DONE = "done",
+  
 }
