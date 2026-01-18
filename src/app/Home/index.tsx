@@ -6,6 +6,7 @@ import { Input } from '@/components/Input';
 import { Filter } from '@/components/Filter';
 import { FilterStatus } from '@/types/FilterStatus';
 
+const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE]
 
 
 
@@ -18,9 +19,15 @@ export function Home() {
         <Input placeholder='O que você precisa comprar'/>
         <Button title="Adicionar" activeOpacity={0.8} />
       </View>
+
       <View style={styles.content}>
-        <Filter status={FilterStatus.DONE} isActive/>
-        <Filter status={FilterStatus.PENDING} isActive/>
+        <View style={styles.header}>
+        {
+          FILTER_STATUS.map((status)=>(
+            <Filter key={status} status={status} isActive/>
+          ))
+        }
+        </View>
       </View>
     </View>
   );
