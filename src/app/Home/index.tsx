@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -33,14 +33,21 @@ export function Home() {
             <Text style={styles.clearText}>Limpar</Text>
           </TouchableOpacity>
         </View>
-        
-        <Item 
-        data={{status: FilterStatus.DONE, description: "café"}}
-        onStatus={() => console.log("Alterna Status")}
-        onRemove={() => console.log("remover")}
-        
-        />
+        <ScrollView>
+
+          {Array.from({length: 50}).map((value, index)=>(
+            <Item 
+            key={index}
+            data={{status: FilterStatus.DONE, description: "café"}}
+            onStatus={() => console.log("Alterna Status do index "+ index)}
+            onRemove={() => console.log("remover o index " + index)}
+            
+            />
+          ))}
+        </ScrollView>
       </View>
+
+      
     </View>
   );
 }
