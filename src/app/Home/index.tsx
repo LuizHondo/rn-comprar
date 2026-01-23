@@ -14,6 +14,10 @@ const ITEMS = [
   {id: "2", status: FilterStatus.DONE, description: "alicate"},
   {id: "3", status: FilterStatus.PENDING, description: "guaraná"},
   {id: "4", status: FilterStatus.DONE, description: "Tijolo"},
+  {id: "5", status: FilterStatus.DONE, description: "banana"},
+  {id: "6", status: FilterStatus.DONE, description: "alicate"},
+  {id: "7", status: FilterStatus.PENDING, description: "guaraná"},
+  {id: "8", status: FilterStatus.DONE, description: "Tijolo"},
 ]
 
 
@@ -23,7 +27,7 @@ export function Home() {
       <Image source={require("@/assets/logo.png")} style={styles.logo} />
 
       <View style={styles.form}>
-        <Input placeholder='O que você precisa comprar'/>
+        <Input placeholder='O que você precisa comprar?'/>
         <Button title="Adicionar" activeOpacity={0.8} />
       </View>
 
@@ -64,6 +68,11 @@ export function Home() {
               />
             )
           }
+          showsVerticalScrollIndicator={true}
+          showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={()=> <View style={styles.separator}/>}
+          contentContainerStyle={styles.listContent}
+          ListEmptyComponent={()=> <Text style={styles.empty}>Nenhum item</Text>}
         />
       </View>
 
