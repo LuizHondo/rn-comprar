@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -10,20 +10,37 @@ import { useState } from 'react';
 
 const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE]
 // const ITEMS = Array.from({length: 50}).map((value, index) => String(index));
-const ITEMS = [
-  {id: "1", status: FilterStatus.DONE, description: "banana"},
-  {id: "2", status: FilterStatus.DONE, description: "alicate"},
-  {id: "3", status: FilterStatus.PENDING, description: "guaraná"},
-  {id: "4", status: FilterStatus.DONE, description: "Tijolo"},
-  {id: "5", status: FilterStatus.DONE, description: "banana"},
-  {id: "6", status: FilterStatus.DONE, description: "alicate"},
-  {id: "7", status: FilterStatus.PENDING, description: "guaraná"},
-  {id: "8", status: FilterStatus.DONE, description: "Tijolo"},
-]
+// const ITEMS = [
+//   {id: "1", status: FilterStatus.DONE, description: "banana"},
+//   {id: "2", status: FilterStatus.DONE, description: "alicate"},
+//   {id: "3", status: FilterStatus.PENDING, description: "guaraná"},
+//   {id: "4", status: FilterStatus.DONE, description: "Tijolo"},
+//   {id: "5", status: FilterStatus.DONE, description: "banana"},
+//   {id: "6", status: FilterStatus.DONE, description: "alicate"},
+//   {id: "7", status: FilterStatus.PENDING, description: "guaraná"},
+//   {id: "8", status: FilterStatus.DONE, description: "Tijolo"},
+// ]
 
 
 export function Home() {
   const [filter, setFilter] = useState(FilterStatus.PENDING)
+  const [description, setDescription] = useState("")
+  const [items, setItems] = useState<any>([])
+
+
+  function handleAdd(){
+    if(!description.trim()){
+      return Alert.alert("Adicionar","Informe o nome do item para adicionar")
+    }
+    const newItem = {
+      id: Math.random().toString(36).substring(2),
+      description,
+      status: FilterStatus.PENDING,
+    }
+    setItems((prevState) => [...prevState, newItem])
+  }
+
+
 
 
   return (
@@ -31,8 +48,11 @@ export function Home() {
       <Image source={require("@/assets/logo.png")} style={styles.logo} />
 
       <View style={styles.form}>
-        <Input placeholder='O que você precisa comprar?'/>
-        <Button title="Adicionar" activeOpacity={0.8} />
+        <Input
+         placeholder='O que você precisa comprar?'
+         onChangeText={setDescription}
+        />
+        <Button title="Adicionar" activeOpacity={0.8} onPress={handleAdd} />
       </View>
 
       <View style={styles.content}>
@@ -66,7 +86,7 @@ export function Home() {
             />
           ))} */}
         <FlatList 
-          data={ITEMS} 
+          data={items} 
           keyExtractor={item => item.id} 
           renderItem={({item})=>(
               <Item 
