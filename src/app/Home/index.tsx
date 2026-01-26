@@ -37,7 +37,7 @@ export function Home() {
       description,
       status: FilterStatus.PENDING,
     }
-    setItems((prevState) => [...prevState, newItem])
+    setItems([...items, newItem])
   }
 
 
