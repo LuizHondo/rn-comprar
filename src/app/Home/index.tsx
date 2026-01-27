@@ -41,13 +41,16 @@ export function Home() {
       status: FilterStatus.PENDING,
     }
     await ItemsStorage.add(newItem)
-    await getItems()
+    await itemsByStatus()
 
+    setFilter(FilterStatus.PENDING)
+    setDescription("")
+    Alert.alert("Item added", `Added ${description}`)
   }
 
-  async function getItems(){
+  async function itemsByStatus(){
     try{
-      const response = await ItemsStorage.get()
+      const response = await ItemsStorage.getByStatus(filter)
       setItems(response)
     }
     catch(error){
@@ -59,7 +62,7 @@ export function Home() {
 
 
   useEffect(() => {
-      getItems()
+      itemsByStatus()
   }, [filter])
 
 
@@ -71,6 +74,7 @@ export function Home() {
         <Input
          placeholder='O que você precisa comprar?'
          onChangeText={setDescription}
+         value={description}
         />
         <Button title="Adicionar" activeOpacity={0.8} onPress={handleAdd} />
       </View>
@@ -92,19 +96,6 @@ export function Home() {
             <Text style={styles.clearText}>Limpar</Text>
           </TouchableOpacity>
         </View>
-
-
-
-
-          {/* {ITEMS.map((value)=>(
-            <Item 
-              key={value}
-              data={{status: FilterStatus.DONE, description: String(value)}}
-              onStatus={() => console.log("Alterna Status do index ")}
-              onRemove={() => console.log("remover o index " )}
-            
-            />
-          ))} */}
         <FlatList 
           data={items} 
           keyExtractor={item => item.id} 
