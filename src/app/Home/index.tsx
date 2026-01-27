@@ -31,7 +31,7 @@ export function Home() {
   const [items, setItems] = useState<ItemStorage[]>([])
 
 
-  function handleAdd(){
+  async function handleAdd(){
     if(!description.trim()){
       return Alert.alert("Add","Inform the requested item name")
     }
@@ -40,13 +40,15 @@ export function Home() {
       description,
       status: FilterStatus.PENDING,
     }
-    setItems([...items, newItem])
+    await ItemsStorage.add(newItem)
+    await getItems()
+
   }
 
   async function getItems(){
     try{
       const response = await ItemsStorage.get()
-      console.log(response)
+      setItems(response)
     }
     catch(error){
       console.log(error)
