@@ -23,8 +23,13 @@ async function get(): Promise<ItemStorage[]> {
 
 
 async function getByStatus(status: FilterStatus): Promise<ItemStorage[]> {
-  const items = await get()
-  return items.filter((item) => item.status === status)
+  try{
+    const items = await get()
+    return items.filter((item) => item.status === status)
+  }
+    catch(error){
+    throw new Error("GET_ITEMS: " + error)
+  }
 }
 
 async function save(items: ItemStorage[]): Promise<void> {
@@ -38,16 +43,55 @@ async function save(items: ItemStorage[]): Promise<void> {
   }
 }
 async function add(newItem: ItemStorage): Promise<ItemStorage[]> {
+  try{
   const items = await get()
   const updatedItems = [...items, newItem]
   await save(updatedItems)
   return updatedItems
+  }catch(error){
+    throw new Error("ITEMS_ADD: " + error)
+  }
+}
 
+async function remove(id:string) {
+  try{
+    const items = await get()
+    const updatedItems = items.filter((item) => item.id !== id)
+    await save(updatedItems)
+  }catch(error){
+    throw new Error("ITEMS_REMOVE: " + error)
+  }
+}
 
+async function clear(){
+  try{
+    await save([])
+  } catch(error){
+    throw new Error("ITEMS_CLEAR: " + error)
+  }
+}
+
+async function toggleStatus(id:string) : Promise<void> {
+  const items = await get()
+  const updatedItems = items.map((item) =>
+    item.id === id
+    ? {
+      ...item, 
+      status:
+        item.status === FilterStatus.PENDING
+          ? FilterStatus.DONE 
+          : FilterStatus.PENDING
+    }
+    : item
+  )
+  await save(updatedItems)
 }
 
 export const ItemsStorage = {
   get,
   getByStatus,
-  add
+  add,
+  remove,
+  clear,
+  toggleStatus
 }

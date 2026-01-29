@@ -31,7 +31,7 @@ export function Home() {
   const [items, setItems] = useState<ItemStorage[]>([])
 
 
-  async function handleAdd(){
+  async function handleAdd():Promise<void>{
     if(!description.trim()){
       return Alert.alert("Add","Inform the requested item name")
     }
@@ -48,7 +48,7 @@ export function Home() {
     Alert.alert("Item added", `Added ${description}`)
   }
 
-  async function itemsByStatus(){
+  async function itemsByStatus():Promise<void>{
     try{
       const response = await ItemsStorage.getByStatus(filter)
       setItems(response)
@@ -56,6 +56,45 @@ export function Home() {
     catch(error){
       console.log(error)
       Alert.alert("Error", "Unable to filter items")
+    }
+  }
+  async function handleRemove(id:string):Promise<void> {
+    try{
+      await ItemsStorage.remove(id)
+      await itemsByStatus()
+    }
+    catch(error){
+      console.log(error)
+      Alert.alert("Remove", "Unable to remove items")
+    }
+  }
+  function handleClear(){
+    Alert.alert("Clear","You sure you want to remove all items?",[
+      {text:"Yes",onPress:onClear},
+      {text:"No",style:"cancel"}
+    ]
+    )
+  }
+
+  async function onClear():Promise<void> {
+    try{
+      ItemsStorage.clear()
+      setItems([])
+    }
+    catch(error){
+      console.log(error)
+      Alert.alert("Clear", "Unable to clear list")
+    }
+  }
+
+  async function handleToggleItemStatus(id:string) {
+    try{
+      await ItemsStorage.toggleStatus(id)
+      itemsByStatus()
+    }
+    catch(error){
+      console.log(error)
+      Alert.alert("Toggle Status", "Unable toggle item status")
     }
   }
 
@@ -72,11 +111,11 @@ export function Home() {
 
       <View style={styles.form}>
         <Input
-         placeholder='O que você precisa comprar?'
+         placeholder='What do you need to buy?'
          onChangeText={setDescription}
          value={description}
         />
-        <Button title="Adicionar" activeOpacity={0.8} onPress={handleAdd} />
+        <Button title="Add" activeOpacity={0.8} onPress={handleAdd} />
       </View>
 
       <View style={styles.content}>
@@ -92,8 +131,8 @@ export function Home() {
             ))
           }
 
-          <TouchableOpacity style={styles.clearButton}>
-            <Text style={styles.clearText}>Limpar</Text>
+          <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
+            <Text style={styles.clearText}>Clear</Text>
           </TouchableOpacity>
         </View>
         <FlatList 
@@ -102,8 +141,8 @@ export function Home() {
           renderItem={({item})=>(
               <Item 
                 data={item}
-                onStatus={() => console.log("Alterna Status do index ")}
-                onRemove={() => console.log("remover o index " )}
+                onStatus={() => handleToggleItemStatus(item.id)}
+                onRemove={()=>handleRemove(item.id)}
               
               />
             )
@@ -112,7 +151,7 @@ export function Home() {
           showsHorizontalScrollIndicator={false}
           ItemSeparatorComponent={()=> <View style={styles.separator}/>}
           contentContainerStyle={styles.listContent}
-          ListEmptyComponent={()=> <Text style={styles.empty}>Nenhum item</Text>}
+          ListEmptyComponent={()=> <Text style={styles.empty}>Empty list.</Text>}
         />
       </View>
 
